@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="systemMgr">
+	<!-- 获取用户信息 -->
+	<select id="getUser" resultClass="com.luohj.privileges.model.User"
+		parameterClass="java.lang.String">
+	  <![CDATA[ 
+    	  select user_id userId ,user_name userName,
+    	  		strftime('%Y-%m-%d %H:%M:%S',create_date) createDate
+    	  	from tb_user where user_id = #userId#    
+  	  ]]>
+	</select>
+
+	<!-- 插入模块信息 -->
+	<insert id="insertModule" parameterClass="com.luohj.privileges.model.Module">
+		  <![CDATA[ 
+	    	      insert into tb_module(module_id, module, module_Type) 
+	    	      	values ( null , #module#, #module#);     
+	  	  ]]>
+		<selectKey resultClass="java.lang.Long" keyProperty="moduleId">
+			SELECT last_insert_rowid() as moduleId ;    
+        </selectKey>
+	</insert>
+
+	<!-- 插入权限项信息 -->
+	<insert id="insertPrivilege" parameterClass="com.luohj.privileges.model.Privilege">
+		  <![CDATA[ 
+	    	      insert into tb_privilege(privilege_id, privilege, module, module_id,
+	    	      	child_module, child_module_id, url) 
+	    	      	values ( null , #privilege#, #module#, #moduleId#, #childModule#, #childModuleId#, #url#);     
+	  	  ]]>
+		<selectKey resultClass="java.lang.Long" keyProperty="privilegeId">
+			SELECT last_insert_rowid() as privilegeId ;    
+        </selectKey>
+	</insert>
+	
+	<!-- 权限项是否存在 -->
+	<select id="isExistsPrivilege" resultClass="java.lang.String"
+		parameterClass="com.luohj.privileges.model.Privilege">
+	  <![CDATA[ 
+    	  select privilege_Id from tb_privilege where 1=1 
+  	  ]]>
+  	  <dynamic>
+   	  	<isNotEmpty prepend="AND" property="url">
+    	  url = #url#   
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="privilegeId">
+    	   privilege_Id = #privilegeId#    
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="privilege">
+    	   privilege_Id = #privilege#
+   	  	</isNotEmpty>
+   	  </dynamic>   
+	</select>
+	
+	<!-- 模块是否存在 -->
+	<select id="isExistsModule" resultClass="java.lang.String"
+		parameterClass="com.luohj.privileges.model.Module">
+	  <![CDATA[ 
+    	  select 1 from tb_module where 1=1
+  	  ]]>
+  	  <dynamic>
+   	  	<isNotEmpty prepend="AND" property="module">
+    	   module = #module#    
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="moduleId">
+    	   module_id = #moduleId#    
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="parModuleId">
+    	   par_module_id = #parModuleId#    
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="parModule">
+    	   par_module = #parModule#    
+   	  	</isNotEmpty>
+   	  </dynamic>  
+	</select>
+	
+	<!-- 是否有权限 -->
+	<select id="hasPrivilege" resultClass="java.lang.String"
+		parameterClass="com.luohj.privileges.model.Privilege">
+	  <![CDATA[ 
+    	 select 1 from tb_privilege_user_relation a ,
+	    	 tb_privilege b, tb_group c , 
+	    	 tb_group_user_relation d, tb_user e
+				where a.[privilege_id] = b.[privilege_id] 
+				and (
+				    (a.[obj_id]=c.[group_id] and a.[obj_type]='GR' 
+				    	and c.[group_id] = d.[group_id] and e.[user_id]=d.[user_id])    
+				    or    
+				    (a.[obj_id]= e.[user_id] and a.[obj_type]='UR')
+				    )    
+				and e.[user_id] = #userId# 
+				
+  	  ]]>
+  	  <dynamic>
+   	  	<isNotEmpty prepend="AND" property="privilegeId">
+    	    b.[privilege_id] = #privilegeId#   
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="privilege">
+    	   b.privilege = #privilege#    
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="url">
+    	   b.url = #url#    
+   	  	</isNotEmpty>
+   	  </dynamic>  
+	</select>
+	
+	<!-- 是否有模块权限 -->
+	<select id="hasPrivilegeOfModule" resultClass="java.lang.String"
+		parameterClass="com.luohj.privileges.model.Privilege">
+	  <![CDATA[ 
+    	 select 1 from tb_module_user_relation a,tb_user b, tb_group c,
+	       tb_group_user_relation d  where a.status_cd = 1000 and
+	       ((a.obj_type='GR' and a.obj_id=c.group_id and c.group_id = d.group_id 
+	       		and d.user_id = b.user_id and c.status_cd = 1000)       
+	       or
+	       (a.obj_type='UR' and a.obj_id = b.user_id))
+	       and b.user_id = #userId#
+  	  ]]>
+  	  <dynamic>
+   	  	<isNotEmpty prepend="AND" property="moduleId">
+    	   a.module_id= #moduleId# 
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="childModuleId">
+    	   a.child_module_id = #childModuleId#
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="module">
+    	   a.module= #module# 
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="childModule">
+    	   a.child_module = #childModule#
+   	  	</isNotEmpty>
+   	  </dynamic> 
+	</select>
+	
+	<!-- 当前权限项是否有权限实例数据 -->
+	<select id="getPrivilegeRoleCnt" resultClass="java.lang.String"
+		parameterClass="java.util.Map">
+	  <![CDATA[ 
+    	 select 1 from tb_privilege_user_relation where 1=1
+  	  ]]>
+  	  <dynamic>
+   	  	<isNotEmpty prepend="AND" property="privilegeId">
+    	   privilege_id = #privilegeId# 
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="privilege">
+    	   privilege = #privilege#    
+   	  	</isNotEmpty>
+   	  	<isNotEmpty prepend="AND" property="url">
+    	   url = #url#    
+   	  	</isNotEmpty>
+   	  </dynamic> 
+	</select>
+	
+</sqlMap>

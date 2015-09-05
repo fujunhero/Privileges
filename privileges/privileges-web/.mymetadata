@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="privileges-web"
+  id="myeclipse.1441294461336"
+  context-root="/privileges-web"
+  j2ee-spec="5.0"
+  archive="privileges-web.war">
+  <attributes>
+    <attribute name="webrootdir" value="&lt;prjroot&gt;" />
+  </attributes>
+</project-module>
+

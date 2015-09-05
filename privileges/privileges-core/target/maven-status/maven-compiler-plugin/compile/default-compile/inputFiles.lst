@@ -1,0 +1,9 @@
+G:\WorkSpace\MyEclipse Work\Test\privileges\privileges-core\src\main\java\com\luohj\privileges\core\dao\IBaseDao.java
+G:\WorkSpace\MyEclipse Work\Test\privileges\privileges-core\src\main\java\com\luohj\privileges\core\utils\ApplicationContextUtil.java
+G:\WorkSpace\MyEclipse Work\Test\privileges\privileges-core\src\main\java\com\luohj\privileges\core\cache\ICache.java
+G:\WorkSpace\MyEclipse Work\Test\privileges\privileges-core\src\main\java\com\luohj\privileges\core\control\AbstractController.java
+G:\WorkSpace\MyEclipse Work\Test\privileges\privileges-core\src\main\java\com\luohj\privileges\core\dao\impl\BaseDao.java
+G:\WorkSpace\MyEclipse Work\Test\privileges\privileges-core\src\main\java\com\luohj\privileges\core\cache\impl\CacheContext.java
+G:\WorkSpace\MyEclipse Work\Test\privileges\privileges-core\src\main\java\com\luohj\privileges\core\model\BaseBean.java
+G:\WorkSpace\MyEclipse Work\Test\privileges\privileges-core\src\main\java\com\luohj\privileges\core\aspect\CacheAspect.java
+G:\WorkSpace\MyEclipse Work\Test\privileges\privileges-core\src\main\java\com\luohj\privileges\core\tags\Cacheable.java
