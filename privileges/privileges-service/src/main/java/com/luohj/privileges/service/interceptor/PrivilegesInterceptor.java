@@ -7,11 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.luohj.privileges.dao.ICommonDao;
 import com.luohj.privileges.dao.IPrivilegeDao;
 import com.luohj.privileges.dao.IUserDao;
 import com.luohj.privileges.model.Module;
@@ -37,6 +35,7 @@ public class PrivilegesInterceptor extends HandlerInterceptorAdapter {
 			.getLogger(PrivilegesInterceptor.class);
 
 	private List<String> passUrl;
+	
 	@Resource
 	private IUserDao userDao;
 	@Resource
@@ -177,7 +176,9 @@ public class PrivilegesInterceptor extends HandlerInterceptorAdapter {
 	 * @return
 	 */
 	private User getUserInfo(String userId) {
-		User user = userDao.getUser(userId);
+		User ur = new User();
+		ur.setUserId(Long.valueOf(userId));
+		User user = userDao.getUser(ur);
 		return user;
 	}
 

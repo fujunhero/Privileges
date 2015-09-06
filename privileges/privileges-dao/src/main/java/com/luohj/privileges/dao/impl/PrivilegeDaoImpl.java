@@ -1,9 +1,7 @@
 package com.luohj.privileges.dao.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.stereotype.Service;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import com.luohj.privileges.core.dao.impl.BaseDao;
 import com.luohj.privileges.dao.IPrivilegeDao;
@@ -22,9 +20,13 @@ import com.luohj.privileges.model.User;
  * 版本号 | 作者 | 修改时间 | 修改内容
  * 
  */
-@Service
+@Repository("privilegeDao")
 public class PrivilegeDaoImpl extends BaseDao implements IPrivilegeDao {
+	private static Logger logger = Logger.getLogger(CommonDaoImpl.class);
 
+	public PrivilegeDaoImpl(){
+		logger.debug("PrivilegeDaoImpl..........成功加载！！！");
+	}
 	@Override
 	public boolean hasPrivilege(User user, Privilege privi,
 			boolean isPriviExists) {

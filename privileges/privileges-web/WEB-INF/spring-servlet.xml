@@ -17,14 +17,8 @@
         
     <mvc:annotation-driven />
     
-    <context:component-scan base-package="com.luohj.privileges.**" use-default-filters="false" >
-    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+    <context:component-scan base-package="com.luohj.privileges.controller.*" >
 	</context:component-scan>
-	
-    <!-- AOP -->
-    <aop:aspectj-autoproxy /> 
     
     <!-- 静态资源映射-->         
     <mvc:default-servlet-handler/>         

@@ -7,5 +7,10 @@
 	<insert id="insertBean"  parameterClass="java.lang.String" >
 		$sql$
 	</insert>
+	
+	<select id="isExistsBean" resultClass="java.lang.String"
+		parameterClass="java.lang.String">
+		$sql$
+	</select>
 
 </sqlMap>

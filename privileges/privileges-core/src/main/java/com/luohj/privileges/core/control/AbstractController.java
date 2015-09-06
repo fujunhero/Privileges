@@ -1,21 +1,37 @@
 package com.luohj.privileges.core.control;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
+
+@Controller
 public class AbstractController {
 	/**
 	 * 拦截请求异常
+	 * 
 	 * @param request
 	 * @param e
 	 * @return
+	 * @throws IOException
 	 */
-    public String exception(HttpServletRequest request, Exception e) {  
-        
-    	e.printStackTrace();
-    	//TODO 添加异常处理逻辑，如日志记录
-        request.setAttribute("exceptionMessage", e.getMessage());  
-                 
-        //返回异常VIEW显示
-        return "error";  
-    }     
+	@ExceptionHandler
+	public void exception(HttpServletRequest request,
+			HttpServletResponse response, Exception e) throws IOException {
+
+		e.printStackTrace();
+		// TODO 添加异常处理逻辑，如日志记录
+		request.setAttribute("exceptionMessage", e.getMessage());
+		if (e.getClass() == NoSuchRequestHandlingMethodException.class) {
+			response.sendRedirect(request.getContextPath()
+					+ "/common/view/404.jsp");
+		} else {
+			response.sendRedirect(request.getContextPath()
+					+ "/common/view/500.jsp");
+		}
+	}
 }

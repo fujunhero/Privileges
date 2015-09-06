@@ -5,7 +5,7 @@
 <sqlMap namespace="systemMgr">
 	<!-- 获取用户信息 -->
 	<select id="getUser" resultClass="com.luohj.privileges.model.User"
-		parameterClass="java.lang.String">
+		parameterClass="java.lang.Long">
 	  <![CDATA[ 
     	  select user_id userId ,user_name userName,
     	  		strftime('%Y-%m-%d %H:%M:%S',create_date) createDate
@@ -85,9 +85,11 @@
 	    	 tb_privilege b, tb_group c , 
 	    	 tb_group_user_relation d, tb_user e
 				where a.[privilege_id] = b.[privilege_id] 
+				and a.status_cd = 1000
 				and (
 				    (a.[obj_id]=c.[group_id] and a.[obj_type]='GR' 
-				    	and c.[group_id] = d.[group_id] and e.[user_id]=d.[user_id])    
+				    	and c.[group_id] = d.[group_id] and e.[user_id]=d.[user_id]
+				    	and d.status_cd = 100)    
 				    or    
 				    (a.[obj_id]= e.[user_id] and a.[obj_type]='UR')
 				    )    
@@ -114,7 +116,7 @@
     	 select 1 from tb_module_user_relation a,tb_user b, tb_group c,
 	       tb_group_user_relation d  where a.status_cd = 1000 and
 	       ((a.obj_type='GR' and a.obj_id=c.group_id and c.group_id = d.group_id 
-	       		and d.user_id = b.user_id and c.status_cd = 1000)       
+	       		and d.user_id = b.user_id and d.status_cd = 1000)       
 	       or
 	       (a.obj_type='UR' and a.obj_id = b.user_id))
 	       and b.user_id = #userId#

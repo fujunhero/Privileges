@@ -15,8 +15,12 @@
      http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 	
-	<bean class="com.luohj.privileges.core.utils.ApplicationContextUtil"></bean>
-
+	<context:annotation-config />
+	<context:component-scan base-package="com.luohj.privileges.**" />
+	
+    <!-- AOP -->
+    <aop:aspectj-autoproxy /> 
+    
 	<!-- 加载property文件配置 -->
 	<bean id="propertyConfigurer"
 		class="com.luohj.privileges.core.utils.ConfigLoader">
@@ -27,10 +31,9 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean class="com.luohj.privileges.core.utils.ApplicationContextUtil"></bean>
 
 	<import resource="classpath:conf/spring/db/spring-sqlite-db.xml"></import>
-	<bean id="commonDao" class="com.luohj.privileges.dao.impl.CommonDaoImpl">
-		<property name="sqlClient" ref="sqlClient"></property>
-	</bean>
-
+	<import resource="classpath:conf/spring/db/applicationContext-transaction.xml"></import>
 </beans>

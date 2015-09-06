@@ -40,12 +40,6 @@
 		<property name="sqlMapClient" ref="sqlMapClient" />
 	</bean>
 
-	<!-- 配置事务管理器 -->
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-
 	<bean id="nativeJdbcExtractor"
 		class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor"
 		lazy-init="true" >
@@ -54,7 +48,4 @@
 		lazy-init="true">
 		<property name="nativeJdbcExtractor" ref="nativeJdbcExtractor" />
 	</bean>
-
-	<!-- 启动spring事务注解，事务注解尽在此 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
 </beans>

@@ -3,6 +3,7 @@ package com.luohj.privileges.service.thread;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
 
 import com.luohj.privileges.core.exception.BusiRuntimeException;
 import com.luohj.privileges.core.model.BaseBean;
@@ -30,7 +31,12 @@ public class InsertBeanArchHandle implements Runnable {
 
 	public InsertBeanArchHandle() {
 		if (commonDao == null) {
-			commonDao = ApplicationContextUtil.getBean("commonDao");
+			synchronized(InsertBeanArchHandle.class){
+				if (commonDao == null) {
+					ApplicationContext ac = ApplicationContextUtil.getContext();
+					commonDao = ApplicationContextUtil.getBean("commonDao");
+				}
+			}
 		}
 	}
 
@@ -43,7 +49,9 @@ public class InsertBeanArchHandle implements Runnable {
 					continue;
 				}
 				try {
-					commonDao.insertBean(beanBean);
+					if(!commonDao.isExistsBean(beanBean)){
+						commonDao.insertBean(beanBean);
+					}
 				} catch (BusiRuntimeException ex) {
 					logger.error(ex.getMessage());
 					ex.printStackTrace();
