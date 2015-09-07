@@ -9,4 +9,4 @@
 8、实现WEB与后端服务的分离，要求达到后端服务可以通过jar运用。
 
 http://localhost:port/privileges-web/index/index/test
-我来试一下好用不-----付军
+这次是把乱码去掉-----付军
