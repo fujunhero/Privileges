@@ -7,3 +7,5 @@
 6、实现可视化权限配置
 7、实现系统异常自定义，页面统一拦截展现错误信息
 8、实现WEB与后端服务的分离，要求达到后端服务可以通过jar运用。
+
+http://localhost:port/privileges-web/index/index/test
